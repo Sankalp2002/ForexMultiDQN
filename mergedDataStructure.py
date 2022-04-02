@@ -16,12 +16,14 @@ class MergedDataStructure():
         timeserie = pandas.read_csv(filename)
         
         #Transform each column into a list
-        Date = timeserie.loc[:, 'Date'].tolist()
-        Time = timeserie.loc[:, 'Time'].tolist()
-        Open = timeserie.loc[:, 'Open'].tolist()
-        High = timeserie.loc[:, 'High'].tolist()
-        Low = timeserie.loc[:, 'Low'].tolist()
-        Close = timeserie.loc[:, 'Close'].tolist()
+        Date = timeserie.ix[:, 'Date'].tolist()
+        Time = timeserie.ix[:, 'Time'].tolist()
+        Open = timeserie.ix[:, 'Open'].tolist()
+        High = timeserie.ix[:, 'High'].tolist()
+        Low = timeserie.ix[:, 'Low'].tolist()
+        Close = timeserie.ix[:, 'Close'].tolist()
+        MA = timeserie.ix[:, 'ma'].tolist()
+        EMA = timeserie.ix[:, 'ema'].tolist()
 
         #Create empty list and dictionary
         self.list=[]
@@ -33,7 +35,7 @@ class MergedDataStructure():
         #Just converting pandas data to a list
         #lets pick up the csv data and put them in the list (self.list) 
         for i in range(0,limit-1):
-            self.list.append({'Date' : Date[i],'Time' : Time[i], 'Open': Open[i], 'High': High[i], 'Low': Low[i], 'Close': Close[i]})
+            self.list.append({'Date' : Date[i],'Time' : Time[i], 'Open': Open[i], 'High': High[i], 'Low': Low[i], 'Close': Close[i], 'MA': MA[i], 'EMA': EMA[i]})
             
             #Fill the gaps with days that do not exist 
             dateList = [datetime.datetime.strptime(Date[i+1], "%m/%d/%Y") - datetime.timedelta(days=x) for x in range(0, ( datetime.datetime.strptime(Date[i+1], "%m/%d/%Y")- datetime.datetime.strptime(Date[i], "%m/%d/%Y") ).days )]
@@ -48,4 +50,3 @@ class MergedDataStructure():
         dateString=str(date)
         #given the date, you get an interval of past days or weeks
         return self.list[self.dict[dateString]-(self.delta):self.dict[dateString]]
-

@@ -38,12 +38,14 @@ class SpEnv(gym.Env):
         spTimeserie = pandas.read_csv('./datasets/'+MK+'Hour.csv')[minLimit:maxLimit] # opening the dataset
         
         #Converts each column to a list
-        Date = spTimeserie.loc[:, 'Date'].tolist()
-        Time = spTimeserie.loc[:, 'Time'].tolist()
-        Open = spTimeserie.loc[:, 'Open'].tolist()
-        High = spTimeserie.loc[:, 'High'].tolist()
-        Low = spTimeserie.loc[:, 'Low'].tolist()
-        Close = spTimeserie.loc[:, 'Close'].tolist()
+        Date = spTimeserie.ix[:, 'Date'].tolist()
+        Time = spTimeserie.ix[:, 'Time'].tolist()
+        Open = spTimeserie.ix[:, 'Open'].tolist()
+        High = spTimeserie.ix[:, 'High'].tolist()
+        Low = spTimeserie.ix[:, 'Low'].tolist()
+        Close = spTimeserie.ix[:, 'Close'].tolist()
+        MA = spTimeserie.ix[:, 'ma'].tolist()
+        EMA = spTimeserie.ix[:, 'ema'].tolist()
         
         #Open the weekly and daily data as a merged data structure
         #Get 20 dimensional vectors (close-open) considering 20 past days and 8 dimensional vectors (close-open) 
@@ -93,7 +95,7 @@ class SpEnv(gym.Env):
         self.limit = len(Open)
         #organizing the dataset as a list of dictionaries 
         for i in range(0,self.limit): 
-            self.history.append({'Date' : Date[i],'Time' : Time[i], 'Open': Open[i], 'High': High[i], 'Low': Low[i], 'Close': Close[i]})
+            self.history.append({'Date' : Date[i],'Time' : Time[i], 'Open': Open[i], 'High': High[i], 'Low': Low[i], 'Close': Close[i], 'MA': MA[i], 'EMA': EMA[i]})
         
         #Next observation starts
         self.nextObservation=0
